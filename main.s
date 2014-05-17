@@ -45,7 +45,7 @@
 
 .endif
 @*********** IF BPEE
-.if USED_GAME==GAME_BPED
+.if USED_GAME==GAME_BPEE
 
     .equ    hq_buffer, FREE_IRAM_BPE
     .equ    buffer_spacing, FRAME_LENGTH_13379*2
