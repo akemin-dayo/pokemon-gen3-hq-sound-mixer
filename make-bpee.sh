@@ -1,2 +1,2 @@
 #!/bin/sh
-make rom=bpee.gba offset=DE4020
+make bpee rom=bpee.gba offset=DE4020

@@ -12,9 +12,9 @@ Assembling and Injecting
 
 You'll need devkitARM from http://sourceforge.net/projects/devkitpro/.
 
-To assemble and inject into a ROM, run `make rom=<game.gba> offset=<offset in hex>`. Omit the `0x`, you don't need that.
+To assemble and inject into a ROM, run `make <game id> rom=<game.gba> offset=<offset in hex>`. Omit the `0x`, you don't need that.
 
-The code targets BPEE by default, change `.equ    USED_GAME, GAME_BPEE` to `GAME_BPED`, `GAME_BPRE`, or `GAME_KWJ6` as you desire.
+The Makefile targets BPEE by default, valid `<game id>` arguments are `bpee`, `bped`, `bpre,` and `kwj6`.
 
 The assembled binary, `main.bin`, should be 1952 (`0x7A0`) bytes long.
 
