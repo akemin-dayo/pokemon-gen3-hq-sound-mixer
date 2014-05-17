@@ -34,4 +34,4 @@ Pointer addresses:
 
 For example, for BPEE, open a hex editor, jump to the address `0x2E00F0`. Assuming you injected the binary into address `0xDE4020` as described above, you would change the pointer to `2040DE08`.
 
-An example bash script is provided, `make-bpee.sh` will automatically assemble the code and inject the assembled binary into a clean BPEE ROM named `bpee.gba`.
+An example bash script is provided, `make-bpee.sh` will automatically assemble the code and inject the assembled binary into a clean BPEE ROM named `bpee.gba` at the address `0xDE4020`.
