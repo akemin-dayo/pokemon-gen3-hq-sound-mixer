@@ -24,15 +24,9 @@ In a clean BPEE ROM, one such address would be `0xDE4020`.
 
 The location of the injected binary doesn't really matter, since this routine is loaded to IRAM before execution automatically anyway. It just has to be in free space.
 
-After injection is complete, you need to modify the pointer, since we're replacing an already-existing routine. Make sure you attach a `0x08` to the beginning of the pointer!
+After injection is complete, `make` will automatically modify the pointer, since we're replacing an already-existing routine.
 
-Pointer addresses:
-
-* BPEE: `0x2E00F0`
-* BPED: `0x2F5E30`
-* BPRE: `0x1DD0B4`
-
-For example, for BPEE, open a hex editor, jump to the address `0x2E00F0`. Assuming you injected the binary into address `0xDE4020` as described above, you would change the pointer to `2040DE08`.
+If for *some* reason you need to change the pointer address (you really shouldn't), the addresses for each game ID are stored in variables near the top of the Makefile.
 
 An example bash script is provided, `make-bpee.sh`. It will automatically assemble the code, inject the assembled binary into a **clean** (might work for hacked ones too, but no guarantees) BPEE ROM named `bpee.gba` at the address `0xDE4020`, and automatically change the pointer at `0x2E00F0` to `2040DE08`.
 

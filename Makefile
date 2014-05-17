@@ -3,8 +3,13 @@ default_target: bpee
 
 TARGET = $@
 
+BPEEpointer=$(shell printf "%d" 0x2E00F0)
+BPEDpointer=$(shell printf "%d" 0x2F5E30)
+BPREpointer=$(shell printf "%d" 0x1DD0B4)
+
 ifdef offset
 INSERT=$(shell printf "%d" 0x$(offset))
+encodedoffset=$(shell sed -e 's/\(..\)\(..\)\(..\)/\\\x\3\\\x\2\\\x\1/' <<< "$(offset)")
 endif
 
 PATH      := /opt/devkitpro/devkitARM/bin:$(PATH)
@@ -25,6 +30,7 @@ bpee :
 ifdef rom
 ifdef INSERT
 	dd if=main-bpee.bin of="$(rom)" conv=notrunc seek=$(INSERT) bs=1
+	printf '$(encodedoffset)\x08' | dd of="$(rom)" conv=notrunc seek=$(BPEEpointer) bs=1
 else
 	@echo "Injection location not found!"
 	@echo "Did you forget to define 'offset'?"
@@ -53,6 +59,7 @@ bped :
 ifdef rom
 ifdef INSERT
 	dd if=main-bped.bin of="$(rom)" conv=notrunc seek=$(INSERT) bs=1
+	printf '$(encodedoffset)\x08' | dd of="$(rom)" conv=notrunc seek=$(BPEDpointer) bs=1
 else
 	@echo "Injection location not found!"
 	@echo "Did you forget to define 'offset'?"
@@ -81,6 +88,7 @@ bpre :
 ifdef rom
 ifdef INSERT
 	dd if=main-bpre.bin of="$(rom)" conv=notrunc seek=$(INSERT) bs=1
+	printf '$(encodedoffset)\x08' | dd of="$(rom)" conv=notrunc seek=$(BPREpointer) bs=1
 else
 	@echo "Injection location not found!"
 	@echo "Did you forget to define 'offset'?"
@@ -96,7 +104,7 @@ endif
 
 kwj6 : 
 	sed 's/^        rom     : ORIGIN = 0x08XXXXXX, LENGTH = 32M$$/        rom     : ORIGIN = 0x08$(offset), LENGTH = 32M/' linker_base.lsc > linker.lsc
-	sed 's/^    .equ    USED_GAME, GAME_BPEE/    .equ    USED_GAME, GAME_BPRE/' main.s > main-kwj6.s
+	sed 's/^    .equ    USED_GAME, GAME_BPEE/    .equ    USED_GAME, GAME_KWJ6/' main.s > main-kwj6.s
 	arm-none-eabi-gcc ${OPTS} -mthumb -mthumb-interwork -Dengine=1 -g -c -w -o main-kwj6.out main-kwj6.s
 	arm-none-eabi-ld -o main-kwj6.o -T linker.lsc main-kwj6.out
 	arm-none-eabi-objcopy -O binary main-kwj6.o main-kwj6.bin
@@ -109,6 +117,8 @@ kwj6 :
 ifdef rom
 ifdef INSERT
 	dd if=main-kwj6.bin of="$(rom)" conv=notrunc seek=$(INSERT) bs=1
+	@echo "Pointer location for build target kwj6 is unknown, it cannot be automatically patched."
+	@echo "Please change the pointer manually."
 else
 	@echo "Injection location not found!"
 	@echo "Did you forget to define 'offset'?"
