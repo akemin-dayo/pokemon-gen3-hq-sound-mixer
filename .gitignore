@@ -1,0 +1,8 @@
+*.bin
+*.gba
+*.sav
+*.o
+*.out
+*.bak
+*.lsc
+!linker_base.lsc
