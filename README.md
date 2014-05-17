@@ -16,9 +16,9 @@ To assemble and inject into a ROM, run `make rom=<game.gba> offset=<offset in he
 
 The code targets BPEE by default, change `.equ    USED_GAME, GAME_BPEE` to `GAME_BPED`, `GAME_BPRE`, or `GAME_KWJ6` as you desire.
 
-The assembled binary, `main.bin`, should be 1952 (0x7A0) bytes long.
+The assembled binary, `main.bin`, should be 1952 (`0x7A0`) bytes long.
 
-To find a suitable offset for injection, open up your ROM in a hex editor and look for an address that has at least 1952 (0x7A0) bytes of continous 00's.
+To find a suitable offset for injection, open up your ROM in a hex editor and look for an address that has at least 1952 (`0x7A0`) bytes of continous `00`'s.
 
 In a clean BPEE ROM, one such address would be `0xDE4020`.
 
@@ -32,6 +32,6 @@ Pointer addresses:
 * BPED: `0x2F5E30`
 * BPRE: `0x1DD0B4`
 
-For example, for BPEE, open a hex editor, jump to the address 0x2E00F0. Assuming you injected the binary into address `0xDE4020` as described above, you would change the pointer to `2040DE08`.
+For example, for BPEE, open a hex editor, jump to the address `0x2E00F0`. Assuming you injected the binary into address `0xDE4020` as described above, you would change the pointer to `2040DE08`.
 
 An example bash script is provided, `make-bpee.sh` will automatically assemble the code and inject the assembled binary into a clean BPEE ROM named `bpee.gba`.
