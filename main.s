@@ -3,8 +3,8 @@
     .equ    GAME_BPED, 0
     .equ    GAME_BPEE, 1
     .equ    GAME_BPRE, 2
-    .equ    GAME_KWJ6, 3
-
+    .equ    GAME_BPGE, 3
+    .equ    GAME_KWJ6, 4
 
     .equ    USED_GAME, GAME_BPEE                @ CHOOSE YOUR GAME
 
@@ -24,6 +24,7 @@
     .equ    BPED_DELTA_TABLE, 0x08686C5C
     .equ    BPEE_DELTA_TABLE, 0x08675A70
     .equ    BPRE_DELTA_TABLE, 0x084899F8
+    .equ    BPGE_DELTA_TABLE, 0x084892D4
     .equ    KWJ6_DELTA_TABLE, 0x0807CC0C
 
     .equ    DECODER_BUFFER_BPE, 0x03001300
@@ -61,6 +62,16 @@
     .equ    buffer_spacing, FRAME_LENGTH_13379*2
     .equ    delta_table, BPRE_DELTA_TABLE
     .equ    decoder_buffer_target, DECODER_BUFFER_BPR
+    .equ    ALLOW_PAUSE, 1
+
+.endif
+@*********** IF BPRE
+.if USED_GAME==GAME_BPGE
+
+    .equ    hq_buffer, FREE_IRAM_BPR
+    .equ    buffer_spacing, FRAME_LENGTH_13379*2
+    .equ    delta_table, BPGE_DELTA_TABLE
+    .equ    decode_buffer_target, DECODE_BUFFER_BPR
     .equ    ALLOW_PAUSE, 1
 
 .endif
