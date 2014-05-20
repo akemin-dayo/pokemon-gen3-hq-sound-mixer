@@ -65,7 +65,7 @@
     .equ    ALLOW_PAUSE, 1
 
 .endif
-@*********** IF BPRE
+@*********** IF BPGE
 .if USED_GAME==GAME_BPGE
 
     .equ    hq_buffer, FREE_IRAM_BPR

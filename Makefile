@@ -130,4 +130,34 @@ else
 	@echo "Ex: make <game id> rom=<game.gba> offset=<offset in hex>"
 endif
 
-.PHONY : kwj6
+.PHONY : bpge
+
+bpge : 
+	sed 's/^        rom     : ORIGIN = 0x08XXXXXX, LENGTH = 32M$$/        rom     : ORIGIN = 0x08$(offset), LENGTH = 32M/' linker_base.lsc > linker.lsc
+	sed 's/^    .equ    USED_GAME, GAME_BPEE/    .equ    USED_GAME, GAME_KWJ6/' main.s > main-bpge.s
+	arm-none-eabi-gcc ${OPTS} -mthumb -mthumb-interwork -Dengine=1 -g -c -w -o main-bpge.out main-bpge.s
+	arm-none-eabi-ld -o main-bpge.o -T linker.lsc main-bpge.out
+	arm-none-eabi-objcopy -O binary main-bpge.o main-bpge.bin
+	rm main-bpge.s
+	rm main-bpge.o
+	rm main-bpge.out
+	rm linker.lsc
+
+#Auto-Insert into the ROM
+ifdef rom
+ifdef INSERT
+	dd if=main-bpge.bin of="$(rom)" conv=notrunc seek=$(INSERT) bs=1
+	@echo "Pointer location for build target bpge is unknown, it cannot be automatically patched."
+	@echo "Please change the pointer manually."
+else
+	@echo "Injection location not found!"
+	@echo "Did you forget to define 'offset'?"
+	@echo "Ex: make <game id> rom=<game.gba> offset=<offset in hex>"
+endif
+else
+	@echo "File location not found!"
+	@echo "Did you forget to define 'rom'?"
+	@echo "Ex: make <game id> rom=<game.gba> offset=<offset in hex>"
+endif
+
+.PHONY : bpge
