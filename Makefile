@@ -6,6 +6,7 @@ TARGET = $@
 BPEEpointer=$(shell printf "%d" 0x2E00F0)
 BPEDpointer=$(shell printf "%d" 0x2F5E30)
 BPREpointer=$(shell printf "%d" 0x1DD0B4)
+BPGEpointer=$(shell printf "%d" 0x1DD090)
 
 ifdef offset
 INSERT=$(shell printf "%d" 0x$(offset))
@@ -134,7 +135,7 @@ endif
 
 bpge : 
 	sed 's/^        rom     : ORIGIN = 0x08XXXXXX, LENGTH = 32M$$/        rom     : ORIGIN = 0x08$(offset), LENGTH = 32M/' linker_base.lsc > linker.lsc
-	sed 's/^    .equ    USED_GAME, GAME_BPEE/    .equ    USED_GAME, GAME_KWJ6/' main.s > main-bpge.s
+	sed 's/^    .equ    USED_GAME, GAME_BPEE/    .equ    USED_GAME, GAME_BPGE/' main.s > main-bpge.s
 	arm-none-eabi-gcc ${OPTS} -mthumb -mthumb-interwork -Dengine=1 -g -c -w -o main-bpge.out main-bpge.s
 	arm-none-eabi-ld -o main-bpge.o -T linker.lsc main-bpge.out
 	arm-none-eabi-objcopy -O binary main-bpge.o main-bpge.bin
@@ -147,8 +148,7 @@ bpge :
 ifdef rom
 ifdef INSERT
 	dd if=main-bpge.bin of="$(rom)" conv=notrunc seek=$(INSERT) bs=1
-	@echo "Pointer location for build target bpge is unknown, it cannot be automatically patched."
-	@echo "Please change the pointer manually."
+	printf '$(encodedoffset)\x08' | dd of="$(rom)" conv=notrunc seek=$(BPGEpointer) bs=1
 else
 	@echo "Injection location not found!"
 	@echo "Did you forget to define 'offset'?"
