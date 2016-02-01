@@ -6,7 +6,7 @@
     .equ    GAME_BPGE, 3
     .equ    GAME_KWJ6, 4
 
-    .equ    USED_GAME, GAME_BPEE                @ CHOOSE YOUR GAME
+    .equ    USED_GAME, GAME_SELECTION                @ CHOOSE YOUR GAME
 
     .equ    FRAME_LENGTH_5734, 0x60
     .equ    FRAME_LENGTH_7884, 0x84
